@@ -1,0 +1,205 @@
+﻿@model IEnumerable<CourseManagement.Models.Course>
+@{
+    ViewBag.Title = "Home Page";
+}
+<br>
+<p>
+    @Html.ActionLink("Create New Course", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Cost
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+    @foreach (var course in Model)
+    {
+        <tr>
+            <td class="lol">
+                <div>@course.Name</div>
+                <span class="schedule" style="display:none">@course.CourseDateTime</span>
+                <span class="scheduleDuration" style="display:none">@course.Duration</span>
+            </td>
+            <td>@course.Cost</td>
+            <td>@Html.ActionLink("Delete", "Delete", new { id = course.Id }, new { onclick = "return confirm('Are you sure you wish to delete this course?');" })</td>
+            <td>@Html.ActionLink("Edit", "Edit", new { id = course.Id })</td>
+        </tr>
+    }
+</table>
+
+<div id="pop-up">
+    <table id="popup">
+        <tr>
+            <th></th>
+            <th scope="col" class="pop">Пн</th>
+            <th scope="col" class="pop">Вт</th>
+            <th scope="col" class="pop">Ср</th>
+            <th scope="col" class="pop">Чт</th>
+            <th scope="col" class="pop">Пят</th>
+        </tr>
+        <tr>
+            <th scope="row" class="pop">9:00</th>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+        </tr>
+        <tr>
+            <th scope="row" class="pop">10:00</th>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+        </tr>
+        <tr>
+            <th scope="row" class="pop">11:00</th>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+        </tr>
+        <tr>
+            <th scope="row" class="pop">12:00</th>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+        </tr>
+        <tr>
+            <th scope="row" class="pop">13:00</th>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+        </tr>
+        <tr>
+            <th scope="row" class="pop">14:00</th>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+        </tr>
+        <tr>
+            <th scope="row" class="pop">15:00</th>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+        </tr>
+        <tr>
+            <th scope="row" class="pop">16:00</th>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+        </tr>
+        <tr>
+            <th scope="row" class="pop">17:00</th>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+            <td class="poptd"></td>
+        </tr>
+
+    </table>
+</div>
+
+<style>
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 16px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    table#popup {
+        border: none;
+        width: 100%; /* Ширина таблицы */
+        background: white; /* Цвет фона таблицы */
+        color: black; /* Цвет текста */
+        border-spacing: 1px; /* Расстояние между ячейками */
+    }
+
+    th.pop {
+        border: 1px solid black;
+        background: aqua; /* Цвет фона ячеек*/
+        padding: 5px; /* Поля вокруг текста */
+    }
+
+    td.poptd {
+        border: 1px solid black;
+        background: white; /* Цвет фона ячеек*/
+        padding: 5px; /* Поля вокруг текста */
+    }
+
+
+    div#pop-up {
+        display: none;
+        position: absolute;
+        width: 280px;
+        padding: 10px;
+        background: #eeeeee;
+        color: #000000;
+        border: 1px solid #1a1a1a;
+        font-size: 90%;
+    }
+</style>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/jquery-1.12.4.min.js")
+    @Scripts.Render("~/Scripts/jquery-ui-1.12.1.min.js")
+
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $('.lol').hover(function () {
+                    var temp = $(this).find('.schedule').html();
+                    var duration = $(this).find('.scheduleDuration').html();
+                    var day = temp.substr(0, 2);
+                    var month = temp.substr(2, 3);
+                    var year = temp.substr(5, 6);
+                    var time = temp.substr(11, 12);
+                    time = time.slice(0, -3);
+                    var start = time.slice(0, -3);
+                    var end = time.slice(0, -3);
+                    end = Number(end);
+                    duration = Number(duration);
+                    end = end + duration;
+                    var courseDate = new Date(year, month, day);
+                    var courseTime = courseDate.getDay();
+                    for (i = start; i <= end; i++) {
+                        $('th:contains(' + time + ')').parent().find('td:eq(' + courseTime + ')').css('background-color', 'green');
+                        time = time.replace(time, i + ':00');
+                    }
+                    $('div#pop-up').show();
+                }, function () {
+                    $('div#pop-up').hide();
+                    $('.poptd').css('background-color', 'white');
+                });
+            });
+        });
+    </script>
+}
